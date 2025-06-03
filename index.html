@@ -1,1 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktive Debatte: Fabers Rationalität und das Glück</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f2; /* Warm neutral background */
+            color: #3a3a3a; /* Softer black for text */
+        }
+        h1, h2, h3, .tab-btn, summary, .definition-title {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 280px; /* Adjusted height */
+            width: 100%;
+            max-width: 550px; /* Adjusted max-width */
+        }
+        details > summary {
+            list-style: none;
+            padding: 1rem 1.25rem;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        details > summary:hover {
+            background-color: #f9fafb; /* Tailwind gray-50 */
+        }
+        details[open] > summary {
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details .content-box {
+            padding: 1rem 1.25rem;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            background-color: #fdfdfb; /* Slightly off-white for content */
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+        .arrow {
+            transition: transform 0.2s ease-in-out;
+            font-size: 1.2em;
+            color: #6b7280; /* Tailwind gray-500 */
+        }
+        details[open] summary .arrow {
+            transform: rotate(90deg);
+        }
+        .tab-btn.active {
+            border-color: #4f46e5; /* Indigo-600 for active tab */
+            color: #4f46e5;
+            background-color: #eef2ff; /* Indigo-50 for active tab background */
+        }
+        .tab-btn {
+            transition: all 0.2s ease-in-out;
+            border-bottom-width: 3px;
+        }
+        .definition-section {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+        }
+        .definition-item {
+            margin-bottom: 1rem;
+        }
+        .definition-item:last-child {
+            margin-bottom: 0;
+        }
+        .definition-term {
+            font-weight: 600;
+            color: #4f46e5; /* Indigo-600 */
+        }
+    </style>
+</head>
+<body class="antialiased">
 
+    <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
+        
+        <header class="text-center mb-10 md:mb-12">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Fabers Rationalität: Hindernis für Glück und Erfüllung?</h1>
+            <p class="mt-4 text-md sm:text-lg text-gray-600 max-w-3xl mx-auto">Eine interaktive Untersuchung der Argumente aus Max Frischs "Homo Faber", die beleuchten, inwiefern Walter Fabers rationale Weltanschauung sein Streben nach persönlichem Glück und Erfüllung beeinflusst.</p>
+        </header>
+
+        <section id="definitionen" class="definition-section">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-700 definition-title">Schlüsselbegriffe der Debatte</h2>
+            <div class="definition-item">
+                <p><span class="definition-term">Rationalität (im Kontext von Walter Faber):</span> Bezeichnet eine Denk- und Handlungsweise, die primär auf Logik, Vernunft, Fakten, technischen Prinzipien und Berechenbarkeit basiert. Emotionen, Intuition, das Unvorhersehbare oder Spirituelle werden dabei oft ausgeklammert oder als irrational abgetan. Fabers Rationalität ist stark von seinem Beruf als Ingenieur geprägt und dient ihm oft als Mittel zur Kontrolle und zur Abwehr von Unsicherheit.</p>
+            </div>
+            <div class="definition-item">
+                <p><span class="definition-term">Glück:</span> Im allgemeinen Verständnis ein Zustand intensiver Freude, Zufriedenheit und Wohlbefinden. Im Kontext der Debatte um Faber geht es darum, ob seine rationale Lebensweise ihm den Zugang zu tiefem, persönlichem Glück ermöglicht oder dieses eher verhindert. Glück kann hier sowohl kurzfristige freudige Momente als auch ein längerfristiges Gefühl von Lebenszufriedenheit umfassen. Die Frage ist, ob Fabers Definition von Glück (z.B. durch Kontrolle und technische Erfolge) mit einem umfassenderen, emotionaleren Glücksbegriff vereinbar ist.</p>
+            </div>
+            <div class="definition-item">
+                <p><span class="definition-term">Erfüllung:</span> Geht über momentanes Glück hinaus und beschreibt ein tieferes Gefühl von Sinnhaftigkeit, Vollständigkeit und Selbstverwirklichung im Leben. Es beinhaltet oft Aspekte wie bedeutungsvolle Beziehungen, das Ausleben eigener Potenziale, emotionale Tiefe und eine Auseinandersetzung mit existenziellen Fragen. Die Debatte untersucht, ob Fabers rationale, auf das Technische fokussierte Existenz ihm wahre Erfüllung bringen kann oder ob sie ihn von den Elementen abschneidet, die für ein erfülltes Leben notwendig sind (z.B. emotionale Verbundenheit, Akzeptanz des Schicksals).</p>
+            </div>
+        </section>
+
+        <section id="visualisierung" class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">Überblick der Argumentationsstränge</h2>
+            <div class="chart-container">
+                <canvas id="argumentsChart"></canvas>
+            </div>
+             <p class="text-center text-sm text-gray-500 mt-4 max-w-2xl mx-auto">Die folgende Anwendung stellt die zentralen Argumente zur Debatte gegenüber. Die Visualisierung zeigt eine gleiche Anzahl von Perspektiven, die dafür sprechen, dass Fabers Rationalität sein Glück behindert, und solchen, die seine Rationalität differenzierter betrachten oder als Schutzmechanismus interpretieren. Erkunden Sie die Details, um sich ein umfassendes Bild zu machen.</p>
+        </section>
+
+        <main>
+            <div class="flex justify-center mb-8 border-b border-gray-300">
+                <button id="btn-pro" class="tab-btn active text-base sm:text-lg font-semibold py-3 px-4 sm:px-6 -mb-px">
+                    Rationalität als Hindernis
+                </button>
+                <button id="btn-contra" class="tab-btn text-base sm:text-lg font-semibold py-3 px-4 sm:px-6 text-gray-500 border-transparent hover:text-indigo-600 hover:border-indigo-300">
+                    Rationalität als Schutz/Kontext
+                </button>
+            </div>
+            
+            <div id="pro-arguments" class="space-y-4">
+                <p class="text-gray-700 mb-6 text-center sm:text-left">Die folgenden Argumente legen dar, wie Walter Fabers stark rationale und technische Denkweise zu Isolation, Verdrängung emotionaler Bedürfnisse und letztlich zu einem Mangel an Lebensfreude und Erfüllung führen könnte.</p>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        P1: Isolation durch technisches Denken
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Faber neigt dazu, seine Umwelt und zwischenmenschliche Beziehungen rein analytisch und funktional zu betrachten. Er reduziert komplexe emotionale oder existentielle Erfahrungen auf technische Abläufe oder messbare Größen. Dieses Denken schafft eine Distanz zur Welt und zu sich selbst, was Glück und Erfüllung behindert.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Wenn Faber Menschen oder Situationen mit Ausdrücken wie „Mechanik der Beziehungen“ beschreibt, entmenschlicht er sie und ordnet sie in sein technisches Weltbild ein. Er sieht nicht das Gefühl oder die individuelle menschliche Eigenart, sondern nur die Funktion.</li>
+                            <li>Sein zwanghaftes Rasieren selbst in der Wüste ist ein Symbol für den Versuch, die unkontrollierbare Natur zu beherrschen und eine Fassade der Ordnung aufrechtzuerhalten, wodurch er sich von echten Emotionen abgrenzt.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        P2: Verdrängung von Vergangenheit und Verantwortung
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Fabers Rationalität dient oft als Schutzmechanismus, um unbequeme Wahrheiten oder eigene Fehler zu verdrängen. Diese Verdrängung hindert ihn an einer echten Auseinandersetzung mit sich selbst und seiner Vergangenheit, was für persönliches Wachstum und Erfüllung notwendig wäre.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                             <li>Seine anfängliche Weigerung, den Kontakt zu Hanna zu suchen und seine langjährige Ignoranz seiner Rolle als Sabeths Vater, sind Ausdruck dieser Verdrängung.</li>
+                             <li>Sein rigides Festhalten an Routinen lenkt ihn von inneren Konflikten ab und kaschiert seine emotionale Verdrängung der Vergangenheit und seiner Verantwortung.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        P3: Kontrollzwang verhindert Lebensfreude
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Fabers unbändiger Drang, alles zu berechnen und zu kontrollieren, erstickt Spontanität und die Fähigkeit, sich dem Fluss des Lebens hinzugeben. Dieser Mangel an Offenheit für das Unvorhersehbare steht echter Lebensfreude und Glück im Weg.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Dies zeigt sich in seiner peniblen Planung von Reisen und dem vergeblichen Versuch, Sabeths Sicherheit zu gewährleisten. Er glaubt, das Leben sei ein Problem, das man durch Logik lösen kann.</li>
+                            <li>Die tägliche Rasur und sein Ordnungszwang sind rituelle Akte der Selbstkontrolle, die Spontanität, Überraschung und damit echtes, unkontrolliertes Glück ersticken.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                         P4: Rationalität verhindert emotionale Selbsterkenntnis
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Fabers rationales Denken und seine Lebensweise stehen seiner emotionalen Entwicklung und Selbsterkenntnis im Wege. Ohne Zugang zu seinen eigenen Gefühlen ist eine tiefe persönliche Erfüllung kaum möglich.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Erst als er todkrank im Krankenhaus liegt, markiert die Erkenntnis „Ich bin nicht mehr Walter Faber“ den Bruch mit seinem alten, rein rationalen Ich und die Konfrontation mit seiner inneren Leere.</li>
+                            <li>Das Festhalten an Routinen dient als Abwehrmechanismus, um sich nicht seinen Gefühlen und der notwendigen Auseinandersetzung mit sich selbst stellen zu müssen.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        P5: Beziehungsunfähigkeit durch emotionale Kälte
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Fabers technische Denkweise führt zu einer emotionalen Kälte, die ihn beziehungsunfähig macht. Tiefe, erfüllende Beziehungen sind jedoch ein wesentlicher Bestandteil menschlichen Glücks.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Sein Umgang mit Hanna und Sabeth zeigt seine emotionale Distanz und eine Sachlichkeit, die echte Nähe vermissen lässt.</li>
+                            <li>Seine alltäglichen Routinen und sein Hang zur Ordnung spiegeln seine emotionale Blockade wider. Für das "Chaos" menschlicher Emotionen bleibt kaum Raum.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        P6: Tragik der späten Einsicht
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Die tragische Ironie von Fabers Leben ist, dass seine Einsicht in die Grenzen seiner Rationalität und die Bedeutung von Gefühl und Schicksal viel zu spät kommt, um ihm noch ein erfülltes Leben zu ermöglichen.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Sabeths Tod ist eine katastrophale Erschütterung, die ihn zur Reflexion zwingt, aber die Einsicht kommt erst nach dem größten Verlust, was vergangenes Glück unwiederbringlich macht.</li>
+                            <li>Seine starre Rationalität hat ihn blind für die menschliche Dimension seines Lebens gemacht, bis das Schicksal ihn brutal einholte und ihm die Chance auf früheres Glück verwehrte.</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+            
+            <div id="contra-arguments" class="space-y-4 hidden">
+                 <p class="text-gray-700 mb-6 text-center sm:text-left">Diese Argumente bieten eine differenziertere Sichtweise auf Fabers Rationalität. Sie beleuchten, wie diese auch als Schutzmechanismus dienen, Stabilität bieten oder dass externe Faktoren maßgeblich für sein Unglück verantwortlich sind, nicht primär seine rationale Natur.</p>
+                 
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        C1: Rationalität als Selbstschutz in Krisen
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Fabers rationale Denkweise ist nicht nur eine Behinderung, sondern oft auch ein effektiver Schutzmechanismus in Krisensituationen. Sie ermöglicht ihm, handlungsfähig zu bleiben, was eine Form der Bewältigung darstellt.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Nach dem Flugzeugabsturz bewahrt ihn seine nüchterne und lösungsorientierte Denkweise davor, in Panik zu geraten. Er konzentriert sich auf Überleben und Reparatur.</li>
+                            <li>Das tägliche Rasieren und die Struktur geben ihm in unsicheren Umgebungen Halt und ein Gefühl von Normalität, was psychologisch stabilisierend wirken kann.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        C2: Glück durch Stabilität und Kontrolle
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Für Faber mag eine Form von Glück auch in Stabilität, Sicherheit und der Beherrschbarkeit der Welt liegen. Seine rationale Planung reduziert Unsicherheiten und schafft eine Basis für sein spezifisches Wohlbefinden.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                             <li>Seine sorgfältige Reiseplanung und Risikoberechnung dienen nicht nur der Effizienz, sondern sichern ihm auch Schutz und Vorhersagbarkeit, was für ihn eine Art Glück darstellt.</li>
+                             <li>Die Ordnung und Disziplin sind Teil seiner Überlebensstrategie und geben ihm die Gewissheit, Herr seiner selbst und seiner Umgebung zu sein, was eine Form von Zufriedenheit sein kann.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        C3: Äußere Umstände als primäre Glückshindernisse
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Viele der tragischen Ereignisse in Fabers Leben sind nicht direkt auf seine Rationalität zurückzuführen, sondern auf unvorhersehbare, schicksalhafte äußere Umstände, die sein Glück unabhängig von seiner Denkweise verhindert hätten.</p>
+                        <p class="font-bold mb-2">Beispiel:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Sabeths Unfall und Tod durch einen Schlangenbiss sind ein tragischer Zufall. Es ist kein direktes Resultat von Fabers Denkweise, sondern ein externes Ereignis, das sein Leben erschüttert.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                         C4: Rationalität als überlebenswichtiger Schutzmechanismus
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Die Rationalität dient Faber als primärer Schutzmechanismus vor den irrationalen, chaotischen und emotional überwältigenden Aspekten des Lebens, was sein Überleben sichert, auch wenn es emotionale Tiefe kostet.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Fabers kühle, analytische Handlungsweise ist entscheidend für sein Überleben beim Flugzeugunglück und in der Wüste. Er konzentriert sich auf Fakten statt auf Emotionen.</li>
+                            <li>Die täglichen Rituale sind mentale Anker, die ihn in Zeiten großer Unsicherheit stabilisieren und ihm helfen, nicht von Angst überwältigt zu werden.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        C5: Unglück durch externe, unkontrollierbare Faktoren
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Die tiefsten Unglücke in Fabers Leben sind primär durch Zufälle und externe Ereignisse bedingt, die außerhalb seiner Kontrolle liegen, und nicht zwangsläufig durch seine rationale innere Einstellung als primäre Ursache für mangelndes Glück.</p>
+                        <p class="font-bold mb-2">Beispiel:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Der Tod Sabeths durch den Schlangenbiss ist ein Paradebeispiel für ein unabwendbares, tragisches Schicksal. Es zeigt, dass auch der rationalste Mensch dem Schicksal und unvorhersehbarem Unglück nicht entkommen kann.</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <summary class="cursor-pointer flex justify-between items-center font-semibold text-gray-800">
+                        C6: Wandelbarkeit der Rationalität und späte Entwicklung
+                        <span class="arrow">&#10148;</span>
+                    </summary>
+                    <div class="content-box text-gray-700">
+                        <p class="font-bold mb-2">These:</p>
+                        <p class="mb-4">Obwohl Faber lange in seiner Rationalität gefangen scheint, zeigt der Roman, dass seine Denkweise nicht statisch ist. Er durchläuft am Ende eine Entwicklung, die seine starren Gewohnheiten aufbricht und eine Form von späte(re)m Verständnis oder Akzeptanz ermöglicht, was als eine Art Erfüllung interpretiert werden könnte.</p>
+                        <p class="font-bold mb-2">Beispiele:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Im Krankenhaus beginnt Faber eine tiefe Reflexion über sein Leben. Er zeigt emotionale Entwicklung, indem er Gefühle wie Reue und Zuneigung zulässt.</li>
+                            <li>Auch wenn äußere Routinen bleiben, beginnt er innerlich, seine Denkweisen zu hinterfragen. Dies deutet auf eine Transformation hin, die zeigt, dass selbst ein "Homo Faber" zur Empathie fähig ist.</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </main>
+
+        <footer class="mt-16 pt-8 border-t border-gray-300 text-center text-gray-500 text-sm">
+            <p>&copy; <span id="currentYear"></span> Interaktive Analyse zu "Homo Faber". Basierend auf bereitgestellten Argumenten.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const proArguments = {
+            labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'],
+            count: 6,
+            color: 'rgba(239, 68, 68, 0.7)' // Tailwind red-500
+        };
+        const contraArguments = {
+            labels: ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'],
+            count: 6,
+            color: 'rgba(59, 130, 246, 0.7)' // Tailwind blue-500
+        };
+
+        const ctx = document.getElementById('argumentsChart').getContext('2d');
+        const argumentsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Argumente "Rationalität als Hindernis"', 'Argumente "Rationalität als Schutz/Kontext"'],
+                datasets: [{
+                    label: 'Anzahl der Hauptargumente',
+                    data: [proArguments.count, contraArguments.count],
+                    backgroundColor: [proArguments.color, contraArguments.color],
+                    borderColor: [
+                        proArguments.color.replace('0.7', '1'), 
+                        contraArguments.color.replace('0.7', '1')
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        grid: {
+                            color: 'rgba(200, 200, 200, 0.2)'
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const btnPro = document.getElementById('btn-pro');
+        const btnContra = document.getElementById('btn-contra');
+        const proSection = document.getElementById('pro-arguments');
+        const contraSection = document.getElementById('contra-arguments');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+
+        function setActiveTab(activeBtn, activeSection) {
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-500', 'border-transparent', 'hover:text-indigo-600', 'hover:border-indigo-300');
+                btn.classList.remove('bg-indigo-50');
+            });
+            
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-gray-500', 'border-transparent', 'hover:text-indigo-600', 'hover:border-indigo-300');
+            activeBtn.classList.add('bg-indigo-50');
+
+
+            proSection.classList.add('hidden');
+            contraSection.classList.add('hidden');
+            activeSection.classList.remove('hidden');
+        }
+
+        btnPro.addEventListener('click', () => {
+            setActiveTab(btnPro, proSection);
+        });
+
+        btnContra.addEventListener('click', () => {
+            setActiveTab(btnContra, contraSection);
+        });
+
+        // Accordion logic for all details elements
+        const detailsElements = document.querySelectorAll('details');
+        detailsElements.forEach(details => {
+            details.addEventListener('toggle', function() {
+                if (this.open) {
+                    detailsElements.forEach(otherDetails => {
+                        if (otherDetails !== this && otherDetails.open) {
+                            // Optional: Close other accordions when one is opened
+                            // otherDetails.removeAttribute('open'); 
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
+```
+
+Die Definitionen sind nun als eigener Abschnitt "Schlüsselbegriffe der Debatte" eingefügt, um sie klar hervorzuheben. Jeder Begriff wird mit seiner Erklärung darunter dargestellt. Das Styling wurde angepasst, um diesen neuen Abschnitt gut zu integrier
